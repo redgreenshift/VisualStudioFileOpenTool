@@ -18,7 +18,7 @@ namespace VisualStudioFileOpenTool
 					int vsVersion;
 					int.TryParse(args[0], out vsVersion);
 					string vsString = GetVersionString(vsVersion);
-					if(string.IsNullOrEmpty(vsString))
+					if (string.IsNullOrEmpty(vsString))
 						return;
 
 					String filename = args[1];
@@ -45,16 +45,44 @@ namespace VisualStudioFileOpenTool
 
 		public static string GetHelpMessage()
 		{
-			var versions = new List<int>() { 2, 3, 5, 8, 10, 12, 13 };
-			string s = "Trying to open specified file at spicified line in active Visual Studio \n\n";
+			var versions = new List<int>() { 2, 3, 5, 8, 10, 12, 13, 14, 15, 16, 17, 18 };
+			string s = "Trying to open specified file at specified line in active Visual Studio instance\n\n";
 
 			s += "usage: <version> <file path> <line number> \n\n";
 
 			s += String.Format("{0} {1,21} \n", "Visual Studio version", "value");
 			foreach (int version in versions)
 			{
-				s += String.Format("{0}{1:D2} ", "VisualStudio 20", version);
-				s += String.Format("{0,21} \n", version);
+				if (version < 14)
+				{
+					s += String.Format("{0}{1:D2} ", "VisualStudio 20", version);
+					s += String.Format("{0,21} \n", version);
+				}
+				else if (version == 14)
+				{
+					s += String.Format("{0} ", "VisualStudio 2015");
+					s += String.Format("{0,21} \n", version);
+				}
+				else if (version == 15)
+				{
+					s += String.Format("{0} ", "VisualStudio 2017");
+					s += String.Format("{0,21} \n", version);
+				}
+				else if (version == 16)
+				{
+					s += String.Format("{0} ", "VisualStudio 2019");
+					s += String.Format("{0,21} \n", version);
+				}
+				else if (version == 17)
+				{
+					s += String.Format("{0} ", "VisualStudio 2022");
+					s += String.Format("{0,21} \n", version);
+				}
+				else if (version == 18)
+				{
+					s += String.Format("{0} ", "VisualStudio 2025");
+					s += String.Format("{0,21} \n", version);
+				}
 			}
 
 			s += "";
@@ -64,23 +92,37 @@ namespace VisualStudioFileOpenTool
 
 		public static string GetVersionString(int visualStudioVersionNumber)
 		{
-			//  Source: http://www.mztools.com/articles/2011/MZ2011011.aspx
+			// Sources:
+			// http://www.mztools.com/articles/2011/MZ2011011.aspx
+			// https://infosys.beckhoff.com/english.php?content=../content/1033/tc3_automationinterface/242746251.html&id=
+			// https://reactos.org/wiki/Visual_Studio_Versions
+			// https://en.wikipedia.org/wiki/Visual_Studio
 			switch (visualStudioVersionNumber)
 			{
+				case 18:
+					return "VisualStudio.DTE.18.0"; // 2025
+				case 17:
+					return "VisualStudio.DTE.17.0"; // 2022
+				case 16:
+					return "VisualStudio.DTE.16.0"; // 2019
+				case 15:
+					return "VisualStudio.DTE.15.0"; // 2017
+				case 14:
+					return "VisualStudio.DTE.14.0"; // 2015
 				case 13:
-					return "VisualStudio.DTE.12.0";
+					return "VisualStudio.DTE.12.0"; // 2013
 				case 12:
-					return "VisualStudio.DTE.11.0";
+					return "VisualStudio.DTE.11.0"; // 2012
 				case 10:
-					return "VisualStudio.DTE.10.0";
+					return "VisualStudio.DTE.10.0"; // 2010
 				case 8:
-					return "VisualStudio.DTE.9.0";
+					return "VisualStudio.DTE.9.0"; // 2007
 				case 5:
-					return "VisualStudio.DTE.8.0";
+					return "VisualStudio.DTE.8.0"; // 2005
 				case 3:
-					return "VisualStudio.DTE.7.1";
+					return "VisualStudio.DTE.7.1"; // 2003
 				case 2:
-					return "VisualStudio.DTE.7";
+					return "VisualStudio.DTE.7";   // 2002
 			}
 
 			MessageBox.Show("Don't know this Visual Studio version. \n\n" + GetHelpMessage());
