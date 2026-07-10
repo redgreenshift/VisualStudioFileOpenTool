@@ -15,7 +15,11 @@ namespace VisualStudioFileOpenTool
 			{
 				if (args != null && args.Length >= 3)
 				{
-					int.TryParse(args[0], out int vsVersion);
+					if (!int.TryParse(args[0], out int vsVersion) || vsVersion < 1)
+					{
+						MessageBox.Show("Invalid Visual Studio version: " + args[0]);
+						return;
+					}
 					string vsString = GetVersionString(vsVersion);
 					if (string.IsNullOrEmpty(vsString))
 						return;
