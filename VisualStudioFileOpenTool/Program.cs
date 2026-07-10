@@ -22,7 +22,11 @@ namespace VisualStudioFileOpenTool
 
 					String filename = args[1];
 
-					int.TryParse(args[2], out int fileline);
+					if (!int.TryParse(args[2], out int fileline) || fileline < 1)
+					{
+						MessageBox.Show("Invalid line number: " + args[2]);
+						return;
+					}
 
 					EnvDTE80.DTE2 dte2;
 					dte2 = (EnvDTE80.DTE2)System.Runtime.InteropServices.Marshal.GetActiveObject(vsString);
