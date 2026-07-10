@@ -50,41 +50,26 @@ namespace VisualStudioFileOpenTool
 			var versions = new List<int>() { 2, 3, 5, 8, 10, 12, 13, 14, 15, 16, 17, 18 };
 			string s = "Trying to open specified file at specified line in active Visual Studio instance\n\n";
 
-			s += "usage: <version> <file path> <line number> \n\n";
+			s += "Usage: <version> <file_path> <line_number>\n\n";
 
-			s += String.Format("{0} {1,21} \n", "Visual Studio version", "value");
+			s += String.Format("{0}\t{1}\n", "Visual Studio version", "Arg 1: <version>");
+			s += String.Format("---------------------------\t---------------------\n");
 			foreach (int version in versions)
 			{
 				if (version < 14)
-				{
-					s += String.Format("{0}{1:D2} ", "VisualStudio 20", version);
-					s += String.Format("{0,21} \n", version);
-				}
+					s += String.Format("{0}{1:D2}", "VisualStudio 20", version);
 				else if (version == 14)
-				{
-					s += String.Format("{0} ", "VisualStudio 2015");
-					s += String.Format("{0,21} \n", version);
-				}
+					s += String.Format("{0}", "VisualStudio 2015");
 				else if (version == 15)
-				{
-					s += String.Format("{0} ", "VisualStudio 2017");
-					s += String.Format("{0,21} \n", version);
-				}
+					s += String.Format("{0}", "VisualStudio 2017");
 				else if (version == 16)
-				{
-					s += String.Format("{0} ", "VisualStudio 2019");
-					s += String.Format("{0,21} \n", version);
-				}
+					s += String.Format("{0}", "VisualStudio 2019");
 				else if (version == 17)
-				{
-					s += String.Format("{0} ", "VisualStudio 2022");
-					s += String.Format("{0,21} \n", version);
-				}
+					s += String.Format("{0}", "VisualStudio 2022");
 				else if (version == 18)
-				{
-					s += String.Format("{0} ", "VisualStudio 2025");
-					s += String.Format("{0,21} \n", version);
-				}
+					s += String.Format("{0}", "VisualStudio 2025");
+
+				s += String.Format("\t\t{0}\n", version);
 			}
 
 			s += "";
@@ -127,7 +112,7 @@ namespace VisualStudioFileOpenTool
 					return "VisualStudio.DTE.7";   // 2002
 			}
 
-			MessageBox.Show("Don't know this Visual Studio version. \n\n" + GetHelpMessage());
+			MessageBox.Show("Don't know this Visual Studio version.\n\n" + GetHelpMessage());
 
 			return "";
 		}
