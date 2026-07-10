@@ -2,12 +2,16 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace VisualStudioFileOpenTool
 {
 	class Program
 	{
+		[DllImport("user32.dll")]
+		private static extern bool SetForegroundWindow(IntPtr hWnd);
+
 		[STAThread]
 		static void Main(string[] args)
 		{
@@ -35,6 +39,7 @@ namespace VisualStudioFileOpenTool
 					EnvDTE80.DTE2 dte2;
 					dte2 = (EnvDTE80.DTE2)System.Runtime.InteropServices.Marshal.GetActiveObject(vsString);
 					dte2.MainWindow.Activate();
+					SetForegroundWindow(new IntPtr(dte2.MainWindow.HWnd));
 					EnvDTE.Window w = dte2.ItemOperations.OpenFile(filename, EnvDTE.Constants.vsViewKindTextView);
 					((EnvDTE.TextSelection) dte2.ActiveDocument.Selection).GotoLine(fileline, true);
 				}
