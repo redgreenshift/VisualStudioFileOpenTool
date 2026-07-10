@@ -20,28 +20,23 @@ namespace VisualStudioFileOpenTool
 				if (args != null && args.Length >= 3)
 				{
 					if (!int.TryParse(args[0], out int vsVersion) || vsVersion < 1)
-					{
-						MessageBox.Show("Invalid Visual Studio version: " + args[0]);
-						return;
-					}
+						throw new ArgumentException("Invalid Visual Studio version: " + args[0]);
 					string vsString = GetVersionString(vsVersion);
 					if (string.IsNullOrEmpty(vsString))
-						return;
+						throw new ArgumentException("Invalid Visual Studio version: " + args[0]);
 
 					String filename = args[1];
 
 					if (!int.TryParse(args[2], out int fileline) || fileline < 1)
-					{
-						MessageBox.Show("Invalid line number: " + args[2]);
-						return;
-					}
+						throw new ArgumentException("Invalid line number: " + args[2]);
 
 					EnvDTE80.DTE2 dte2;
 					dte2 = (EnvDTE80.DTE2)System.Runtime.InteropServices.Marshal.GetActiveObject(vsString);
 					dte2.MainWindow.Activate();
 					SetForegroundWindow(new IntPtr(dte2.MainWindow.HWnd));
+
 					EnvDTE.Window w = dte2.ItemOperations.OpenFile(filename, EnvDTE.Constants.vsViewKindTextView);
-					((EnvDTE.TextSelection) dte2.ActiveDocument.Selection).GotoLine(fileline, true);
+					((EnvDTE.TextSelection) dte2.ActiveDocument.Selection).GotoLine(fileline, Select: true);
 				}
 				else
 				{
@@ -50,7 +45,7 @@ namespace VisualStudioFileOpenTool
 			}
 			catch (Exception e)
 			{
-				Console.Write(e.Message);
+				MessageBox.Show(e.Message + "\n\n" + GetHelpMessage());
 			}
 		}
 
@@ -120,8 +115,6 @@ namespace VisualStudioFileOpenTool
 				case 2:
 					return "VisualStudio.DTE.7";   // 2002
 			}
-
-			MessageBox.Show("Don't know this Visual Studio version.\n\n" + GetHelpMessage());
 
 			return "";
 		}
