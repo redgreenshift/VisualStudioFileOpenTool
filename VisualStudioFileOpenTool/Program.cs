@@ -15,16 +15,14 @@ namespace VisualStudioFileOpenTool
 			{
 				if (args != null && args.Length > 0)
 				{
-					int vsVersion;
-					int.TryParse(args[0], out vsVersion);
+					int.TryParse(args[0], out int vsVersion);
 					string vsString = GetVersionString(vsVersion);
 					if (string.IsNullOrEmpty(vsString))
 						return;
 
 					String filename = args[1];
 
-					int fileline;
-					int.TryParse(args[2], out fileline);
+					int.TryParse(args[2], out int fileline);
 
 					EnvDTE80.DTE2 dte2;
 					dte2 = (EnvDTE80.DTE2)System.Runtime.InteropServices.Marshal.GetActiveObject(vsString);
