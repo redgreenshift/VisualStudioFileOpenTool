@@ -13,7 +13,7 @@ namespace VisualStudioFileOpenTool
 		{
 			try
 			{
-				if (args != null && args.Length > 0)
+				if (args != null && args.Length >= 3)
 				{
 					int.TryParse(args[0], out int vsVersion);
 					string vsString = GetVersionString(vsVersion);
