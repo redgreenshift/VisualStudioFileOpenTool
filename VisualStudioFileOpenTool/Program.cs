@@ -51,7 +51,7 @@ namespace VisualStudioFileOpenTool
 
 		public static string GetHelpMessage()
 		{
-			var versions = new List<int>() { 2, 3, 5, 8, 10, 12, 13, 14, 15, 16, 17, 18 };
+			var versions = new List<int>() { 2, 3, 5, 8, 10, 12, 13, 15, 17, 19, 22, 25 };
 			string s = "Trying to open specified file at specified line in active Visual Studio instance\n\n";
 
 			s += "Usage: <version> <file_path> <line_number>\n\n";
@@ -60,19 +60,7 @@ namespace VisualStudioFileOpenTool
 			s += String.Format("---------------------------\t---------------------\n");
 			foreach (int version in versions)
 			{
-				if (version < 14)
-					s += String.Format("{0}{1:D2}", "VisualStudio 20", version);
-				else if (version == 14)
-					s += String.Format("{0}", "VisualStudio 2015");
-				else if (version == 15)
-					s += String.Format("{0}", "VisualStudio 2017");
-				else if (version == 16)
-					s += String.Format("{0}", "VisualStudio 2019");
-				else if (version == 17)
-					s += String.Format("{0}", "VisualStudio 2022");
-				else if (version == 18)
-					s += String.Format("{0}", "VisualStudio 2025");
-
+				s += String.Format("{0}{1:D2}", "VisualStudio 20", version);
 				s += String.Format("\t\t{0}\n", version);
 			}
 
@@ -90,15 +78,15 @@ namespace VisualStudioFileOpenTool
 			// https://en.wikipedia.org/wiki/Visual_Studio
 			switch (visualStudioVersionNumber)
 			{
-				case 18:
+				case 25:
 					return "VisualStudio.DTE.18.0"; // 2025
-				case 17:
+				case 22:
 					return "VisualStudio.DTE.17.0"; // 2022
-				case 16:
+				case 19:
 					return "VisualStudio.DTE.16.0"; // 2019
-				case 15:
+				case 17:
 					return "VisualStudio.DTE.15.0"; // 2017
-				case 14:
+				case 15:
 					return "VisualStudio.DTE.14.0"; // 2015
 				case 13:
 					return "VisualStudio.DTE.12.0"; // 2013
@@ -107,7 +95,7 @@ namespace VisualStudioFileOpenTool
 				case 10:
 					return "VisualStudio.DTE.10.0"; // 2010
 				case 8:
-					return "VisualStudio.DTE.9.0"; // 2007
+					return "VisualStudio.DTE.9.0"; // 2008
 				case 5:
 					return "VisualStudio.DTE.8.0"; // 2005
 				case 3:
