@@ -49,7 +49,6 @@ namespace VisualStudioFileOpenTool
 			}
 		}
 
-
 		// TODO: Remove this method and use string.IsNullOrWhiteSpace() instead if targeting .NET 4.0 or higher.
 		public static bool IsNullOrWhiteSpace(string value)
 		{
