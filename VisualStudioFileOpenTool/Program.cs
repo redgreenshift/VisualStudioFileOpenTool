@@ -26,7 +26,7 @@ namespace VisualStudioFileOpenTool
 					if (IsNullOrWhiteSpace(vsString))
 						throw new ArgumentException("Invalid Visual Studio version: " + args[0]);
 
-					String filename = args[1];
+					string filename = args[1];
 					if (!ValidAndSafeFilename(filename))
 						throw new ArgumentException("Invalid file name: " + args[1]);
 
@@ -71,28 +71,28 @@ namespace VisualStudioFileOpenTool
 		}
 
 		/// <summary>
-		/// Verifies that the specified filename is valid and safe to pass to Visual Studio COM interface.
+		/// Verifies that the specified filename (including path) is valid and safe to pass to Visual Studio COM interface.
 		/// </summary>
-		/// <param name="filename">The filename to validate.</param>
-		/// <returns>True if the filename is valid and safe to pass to Visual Studio COM interface; otherwise, false.</returns>
-		static bool ValidAndSafeFilename(string filename)
+		/// <param name="path">The filename and path to validate.</param>
+		/// <returns>True if the filename and path is valid and safe to pass to Visual Studio COM interface; otherwise, false.</returns>
+		static bool ValidAndSafeFilename(string path)
 		{
-			if (IsNullOrWhiteSpace(filename)) return false;
+			if (IsNullOrWhiteSpace(path)) return false;
 
 			// Reject path traversal attempts anywhere in the string
-			if (filename.Contains("..")) return false; // Intentionally overly agressive, could relax to @"\..\"
+			if (path.Contains("..")) return false; // Intentionally overly agressive, could relax to @"\..\"
 
 			// Check for any invalid characters in the path portion of the string.
-			if (filename.IndexOfAny(System.IO.Path.GetInvalidPathChars()) >= 0) return false;
+			if (path.IndexOfAny(System.IO.Path.GetInvalidPathChars()) >= 0) return false;
 
 			// Reject absolute network/UNC style locations via explicit detection
-			if (IsUncPath(filename)) return false;
+			if (IsUncPath(path)) return false;
 
-			// Require fully-qualified local path!
-			if (!System.IO.Path.IsPathRooted(filename)) return false;
+			// Require fully-qualified local path
+			if (!System.IO.Path.IsPathRooted(path)) return false;
 
 			// Verify file actually exists on disk before passing to Visual Studio COM interface.
-			if (!System.IO.File.Exists(filename)) return false;
+			if (!System.IO.File.Exists(path)) return false;
 
 			return true;
 		}
