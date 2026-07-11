@@ -22,7 +22,7 @@ namespace VisualStudioFileOpenTool
 					if (!int.TryParse(args[0], out int vsVersion) || vsVersion < 1)
 						throw new ArgumentException("Invalid Visual Studio version: " + args[0]);
 					string vsString = GetVersionString(vsVersion);
-					if (string.IsNullOrEmpty(vsString))
+					if (IsNullOrWhiteSpace(vsString))
 						throw new ArgumentException("Invalid Visual Studio version: " + args[0]);
 
 					String filename = args[1];
@@ -47,6 +47,20 @@ namespace VisualStudioFileOpenTool
 			{
 				MessageBox.Show(e.Message + "\n\n" + GetHelpMessage());
 			}
+		}
+
+
+		// TODO: Remove this method and use string.IsNullOrWhiteSpace() instead if targeting .NET 4.0 or higher.
+		public static bool IsNullOrWhiteSpace(string value)
+		{
+			if (value == null)
+				return true;
+			for (int i = 0; i < value.Length; i++)
+			{
+				if (!char.IsWhiteSpace(value[i]))
+					return false;
+			}
+			return true;
 		}
 
 		public static string GetHelpMessage()
