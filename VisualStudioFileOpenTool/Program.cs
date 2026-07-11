@@ -78,30 +78,18 @@ namespace VisualStudioFileOpenTool
 			// https://en.wikipedia.org/wiki/Visual_Studio
 			switch (visualStudioVersionNumber)
 			{
-				case 25:
-					return "VisualStudio.DTE.18.0"; // 2025
-				case 22:
-					return "VisualStudio.DTE.17.0"; // 2022
-				case 19:
-					return "VisualStudio.DTE.16.0"; // 2019
-				case 17:
-					return "VisualStudio.DTE.15.0"; // 2017
-				case 15:
-					return "VisualStudio.DTE.14.0"; // 2015
-				case 13:
-					return "VisualStudio.DTE.12.0"; // 2013
-				case 12:
-					return "VisualStudio.DTE.11.0"; // 2012
-				case 10:
-					return "VisualStudio.DTE.10.0"; // 2010
-				case 8:
-					return "VisualStudio.DTE.9.0"; // 2008
-				case 5:
-					return "VisualStudio.DTE.8.0"; // 2005
-				case 3:
-					return "VisualStudio.DTE.7.1"; // 2003
-				case 2:
-					return "VisualStudio.DTE.7";   // 2002
+				case 25: return "VisualStudio.DTE.18.0"; // 2025
+				case 22: return "VisualStudio.DTE.17.0"; // 2022
+				case 19: return "VisualStudio.DTE.16.0"; // 2019
+				case 17: return "VisualStudio.DTE.15.0"; // 2017
+				case 15: return "VisualStudio.DTE.14.0"; // 2015
+				case 13: return "VisualStudio.DTE.12.0"; // 2013
+				case 12: return "VisualStudio.DTE.11.0"; // 2012
+				case 10: return "VisualStudio.DTE.10.0"; // 2010
+				case 8:  return "VisualStudio.DTE.9.0";  // 2008
+				case 5:  return "VisualStudio.DTE.8.0";  // 2005
+				case 3:  return "VisualStudio.DTE.7.1";  // 2003
+				case 2:  return "VisualStudio.DTE.7";    // 2002
 			}
 
 			return "";
