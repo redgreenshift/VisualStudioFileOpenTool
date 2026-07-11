@@ -26,6 +26,8 @@ namespace VisualStudioFileOpenTool
 						throw new ArgumentException("Invalid Visual Studio version: " + args[0]);
 
 					String filename = args[1];
+					if (!ValidAndSafeFilename(filename))
+						throw new ArgumentException("Invalid file name: " + args[1]);
 
 					if (!int.TryParse(args[2], out int fileline) || fileline < 1)
 						throw new ArgumentException("Invalid line number: " + args[2]);
