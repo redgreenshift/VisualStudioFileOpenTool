@@ -36,7 +36,7 @@ namespace VisualStudioFileOpenTool
 					SetForegroundWindow(new IntPtr(dte2.MainWindow.HWnd));
 
 					EnvDTE.Window w = dte2.ItemOperations.OpenFile(filename, EnvDTE.Constants.vsViewKindTextView);
-					((EnvDTE.TextSelection) dte2.ActiveDocument.Selection).GotoLine(fileline, Select: true);
+					((EnvDTE.TextSelection)dte2.ActiveDocument.Selection).GotoLine(fileline, Select: true);
 				}
 				else
 				{
