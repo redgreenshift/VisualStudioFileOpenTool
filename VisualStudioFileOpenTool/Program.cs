@@ -15,6 +15,7 @@ namespace VisualStudioFileOpenTool
 		[STAThread]
 		static void Main(string[] args)
 		{
+			EnvDTE80.DTE2 dte2 = null;
 			try
 			{
 				if (args != null && args.Length >= 3)
@@ -32,7 +33,6 @@ namespace VisualStudioFileOpenTool
 					if (!int.TryParse(args[2], out int fileline) || fileline < 1)
 						throw new ArgumentException("Invalid line number: " + args[2]);
 
-					EnvDTE80.DTE2 dte2;
 					dte2 = (EnvDTE80.DTE2)System.Runtime.InteropServices.Marshal.GetActiveObject(vsString);
 					dte2.MainWindow.Activate();
 					SetForegroundWindow(new IntPtr(dte2.MainWindow.HWnd));
@@ -48,6 +48,12 @@ namespace VisualStudioFileOpenTool
 			catch (Exception e)
 			{
 				MessageBox.Show(e.Message + "\n\n" + GetHelpMessage());
+			}
+			finally
+			{
+				// Clean up COM objects if necessary
+				if (dte2 != null)
+					Marshal.ReleaseComObject(dte2);
 			}
 		}
 
