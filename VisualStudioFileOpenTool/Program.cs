@@ -80,7 +80,10 @@ namespace VisualStudioFileOpenTool
 			if (IsNullOrWhiteSpace(path)) return false;
 
 			// Reject path traversal attempts anywhere in the string
-			if (path.Contains("..")) return false; // Intentionally overly agressive, could relax to @"\..\"
+			if (path.StartsWith("..") || path.Contains(@"\..") || path.Contains(@"/..")) return false;
+
+			// trailing dots or spaces can behave strangely on Windows
+			if (path.EndsWith(".") || char.IsWhiteSpace(path[path.Length - 1])) return false;
 
 			// Check for any invalid characters in the path portion of the string.
 			if (path.IndexOfAny(System.IO.Path.GetInvalidPathChars()) >= 0) return false;
