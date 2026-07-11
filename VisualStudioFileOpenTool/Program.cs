@@ -107,6 +107,10 @@ namespace VisualStudioFileOpenTool
 			if (IsNullOrWhiteSpace(path))
 				return false;
 
+			path = path.Trim();
+			if (path.Length < 3)
+				return false; // Minimum length for a UNC path is 3 characters (e.g., \\a\b)
+
 			return path.StartsWith(@"\\?\UNC\", StringComparison.OrdinalIgnoreCase) // Handle extended UNC prefix \\?\UNC\ used with long paths
 						// device namespace prefix used to access devices like \\.\PhysicalDrive0
 				|| (   !path.StartsWith(@"\\.\", StringComparison.OrdinalIgnoreCase)
