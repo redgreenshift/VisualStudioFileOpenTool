@@ -41,6 +41,6 @@ A tool to open a specified file at a specific line in the active Visual Studio i
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/diimdeep/VisualStudioFileOpenTool/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
-### AI Policy
+## AI Policy
 
 Contributions from AI agents are welcome so long as they're reviewed by humans before committing — all changes MUST be approved by a real person, not merely accepted by an automated process or another agent.
