@@ -43,4 +43,10 @@ A tool to open a specified file at a specific line in the active Visual Studio i
 
 ## AI Policy
 
-Contributions from AI agents are welcome so long as they're reviewed by humans before committing — all changes MUST be approved by a real person, not merely accepted by an automated process or another agent.
+Contributions from AI agents are welcome, provided they are reviewed by a
+human before being committed. Every change MUST be approved by a real person;
+approval by an automated process or another AI agent alone is insufficient.
+
+AI tools may be used to suggest code ideas or help draft comments, but all
+code is reviewed by the project author before committing. Code that the
+author does not fully understand is not committed.
