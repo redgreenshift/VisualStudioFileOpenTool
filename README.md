@@ -3,6 +3,10 @@ VisualStudioFileOpenTool
 
 A tool to open a specified file at a specific line in the active Visual Studio instance.
 
+[![License: Unlicense](https://img.shields.io/badge/License-Unlicense-blue.svg)](https://unlicense.org/)
+[![C#](https://img.shields.io/badge/language-C%23-68217A.svg)](https://dotnet.microsoft.com/)
+[![.NET 2+](https://img.shields.io/badge/.NET-2.0+-green)](https://dotnet.microsoft.com/)
+
 [Download binary](https://github.com/diimdeep/VisualStudioFileOpenTool/blob/master/VisualStudioFileOpenTool/bin/Release/VisualStudioFileOpenTool.exe)
 
 **Usage:** `VisualStudioFileOpenTool.exe <version> <file_path> <line_number>`
