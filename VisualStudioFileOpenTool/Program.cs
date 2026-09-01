@@ -36,10 +36,10 @@ namespace VisualStudioFileOpenTool
                     dte2 = (EnvDTE80.DTE2)System.Runtime.InteropServices.Marshal.GetActiveObject(vsString);
                     dte2.MainWindow.Activate();
                     SetForegroundWindow(new IntPtr(dte2.MainWindow.HWnd));
+                    EnvDTE.Window w = dte2.ItemOperations.OpenFile(filename, EnvDTE.Constants.vsViewKindTextView);
 
                     try
                     {
-                        EnvDTE.Window w = dte2.ItemOperations.OpenFile(filename, EnvDTE.Constants.vsViewKindTextView);
                         ((EnvDTE.TextSelection)dte2.ActiveDocument.Selection).GotoLine(fileline);
                     }
                     catch (Exception)
