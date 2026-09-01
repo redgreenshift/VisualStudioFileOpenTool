@@ -42,7 +42,7 @@ namespace VisualStudioFileOpenTool
 						EnvDTE.Window w = dte2.ItemOperations.OpenFile(filename, EnvDTE.Constants.vsViewKindTextView);
 						((EnvDTE.TextSelection)dte2.ActiveDocument.Selection).GotoLine(fileline);
 					}
-					catch (Exception e)
+					catch (Exception)
 					{
 						// Occasionally, I get a weird error about a failed RPC call,
 						// but everything is working except for the selected line.
