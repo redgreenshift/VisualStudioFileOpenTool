@@ -9,8 +9,6 @@ A tool to open a specified file at a specific line in the active Visual Studio i
 [![.NET Framework 2.0](https://img.shields.io/badge/2.0-512BD4.svg?logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/platform/support/policy/dotnet-framework)
 [![License: Unlicense](https://img.shields.io/badge/License-Unlicense-808080.svg?logo=unlicense&logoColor=white)](https://unlicense.org/)
 
-[Download binary](https://github.com/diimdeep/VisualStudioFileOpenTool/blob/master/VisualStudioFileOpenTool/bin/Release/VisualStudioFileOpenTool.exe)
-
 **Usage:** `VisualStudioFileOpenTool.exe <version> <file_path> <line_number>`
 
 | Visual Studio version | Arg 1: `<version>` |
@@ -39,8 +37,6 @@ A tool to open a specified file at a specific line in the active Visual Studio i
 	VisualStudioFileOpenTool.exe 26 %f %l
 
 *Inspired by this StackOverflow question: ["Open a file in Visual Studio at a specific line number"](http://stackoverflow.com/questions/350323/open-a-file-in-visual-studio-at-a-specific-line-number).*
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/diimdeep/VisualStudioFileOpenTool/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 ## AI Policy
 
