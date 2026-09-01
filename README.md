@@ -26,17 +26,17 @@ A tool to open a specified file at a specific line in the active Visual Studio i
 | VisualStudio 2017 | 17 |
 | VisualStudio 2019 | 19 |
 | VisualStudio 2022 | 22 |
-| VisualStudio 2025 | 25 |
+| VisualStudio 2026 | 26 |
 
 *(Note: The first argument is the `<version>` value from the table above.)*
 
 **GrepWin settings:**
 
-	VisualStudioFileOpenTool.exe 25 %path% %line%
+	VisualStudioFileOpenTool.exe 26 %path% %line%
 
 **Beyond Compare settings (Options - Open With - Command line):**
 
-	VisualStudioFileOpenTool.exe 25 %f %l
+	VisualStudioFileOpenTool.exe 26 %f %l
 
 *Inspired by this StackOverflow question: ["Open a file in Visual Studio at a specific line number"](http://stackoverflow.com/questions/350323/open-a-file-in-visual-studio-at-a-specific-line-number).*
 

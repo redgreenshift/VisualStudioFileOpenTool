@@ -138,7 +138,7 @@ namespace VisualStudioFileOpenTool
 
 		public static string GetHelpMessage()
 		{
-			var versions = new List<int>() { 2, 3, 5, 8, 10, 12, 13, 15, 17, 19, 22, 25 };
+			var versions = new List<int>() { 2, 3, 5, 8, 10, 12, 13, 15, 17, 19, 22, 26 };
 			string s = "Trying to open specified file at specified line in active Visual Studio instance\n\n";
 
 			s += "Usage: <version> <file_path> <line_number>\n\n";
@@ -165,7 +165,7 @@ namespace VisualStudioFileOpenTool
 			// https://en.wikipedia.org/wiki/Visual_Studio
 			switch (visualStudioVersionNumber)
 			{
-				case 25: return "VisualStudio.DTE.18.0"; // 2025
+				case 26: return "VisualStudio.DTE.18.0"; // 2026
 				case 22: return "VisualStudio.DTE.17.0"; // 2022
 				case 19: return "VisualStudio.DTE.16.0"; // 2019
 				case 17: return "VisualStudio.DTE.15.0"; // 2017
