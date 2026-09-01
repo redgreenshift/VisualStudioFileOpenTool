@@ -26,7 +26,8 @@ A tool to open a specified file at a specific line in the active Visual Studio i
 | VisualStudio 2022 | 22 |
 | VisualStudio 2026 | 26 |
 
-*(Note: The first argument is the `<version>` value from the table above.)*
+> [!NOTE]
+> The first argument is the `<version>` value from the table above.
 
 **GrepWin settings:**
 
