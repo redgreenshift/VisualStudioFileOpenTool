@@ -37,8 +37,22 @@ namespace VisualStudioFileOpenTool
 					dte2.MainWindow.Activate();
 					SetForegroundWindow(new IntPtr(dte2.MainWindow.HWnd));
 
-					EnvDTE.Window w = dte2.ItemOperations.OpenFile(filename, EnvDTE.Constants.vsViewKindTextView);
-					((EnvDTE.TextSelection)dte2.ActiveDocument.Selection).GotoLine(fileline);
+					try
+					{
+						EnvDTE.Window w = dte2.ItemOperations.OpenFile(filename, EnvDTE.Constants.vsViewKindTextView);
+						((EnvDTE.TextSelection)dte2.ActiveDocument.Selection).GotoLine(fileline);
+					}
+					catch (Exception e)
+					{
+						// Occasionally, I get a weird error about a failed RPC call,
+						// but everything is working except for the selected line.
+						// I often don't notice until I see many dialog boxes. It's
+						// such a PAIN to close all the dialog boxes. Let's streamline
+						// the experience by silently failing to select the line.
+						//
+						// Easier for user to retrigger an edit command from a diff tool
+						// than close all the dialogs that appear behind Visual Studio.
+					}
 				}
 				else
 				{
