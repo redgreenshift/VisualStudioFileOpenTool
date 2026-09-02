@@ -17,7 +17,7 @@ namespace VisualStudioFileOpenTool
         // https://infosys.beckhoff.com/english.php?content=../content/1033/tc3_automationinterface/242746251.html&id=
         // https://reactos.org/wiki/Visual_Studio_Versions
         // https://en.wikipedia.org/wiki/Visual_Studio
-        static Dictionary<int, string> theVersionInfo = new Dictionary<int, string>()
+        static Dictionary<int, string> Versions = new Dictionary<int, string>()
         {
             [2] = "VisualStudio.DTE.7",     // 2002
             [3] = "VisualStudio.DTE.7.1",   // 2003
@@ -47,7 +47,7 @@ namespace VisualStudioFileOpenTool
 
                 if (!int.TryParse(args[0], out int vsVersion) || vsVersion < 1)
                     throw new ArgumentException("Invalid Visual Studio version: " + args[0]);
-                if (!theVersionInfo.TryGetValue(vsVersion, out string visualStudioProgId) || IsNullOrWhiteSpace(visualStudioProgId))
+                if (!Versions.TryGetValue(vsVersion, out string visualStudioProgId) || IsNullOrWhiteSpace(visualStudioProgId))
                     throw new ArgumentException("Invalid Visual Studio version: " + args[0]);
 
                 string filename = args[1];
@@ -244,7 +244,7 @@ namespace VisualStudioFileOpenTool
 
             s += String.Format("{0}\t{1}\n", "Visual Studio version", "Arg 1: <version>");
             s += String.Format("---------------------------\t---------------------\n");
-            foreach (var info in theVersionInfo)
+            foreach (var info in Versions)
             {
                 int version = info.Key;
                 s += String.Format("{0}{1:D2}", "VisualStudio 20", version);
