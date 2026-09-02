@@ -127,10 +127,91 @@ namespace VisualStudioFileOpenTool
             // Require fully-qualified local path
             if (!System.IO.Path.IsPathRooted(path)) return false;
 
+            // Intentionally allow reserved-looking names. NTFS/WSL may contain files such
+            // as "con.txt"; ordinary Windows APIs may handle those paths differently.
+            //
+            // // Reject reserved device names (CON, PRN, AUX, NUL, COM1-9, LPT1-9) anywhere in the path.
+            // if (IsReservedDeviceName(path)) return false;
+
             // Verify file actually exists on disk before passing to Visual Studio COM interface.
             if (!System.IO.File.Exists(path)) return false;
 
             return true;
+        }
+
+        // Windows reserved device names: CON, PRN, AUX, NUL, COM1-9, LPT1-9
+        private static readonly string[] ReservedDeviceNames = CreateReservedDeviceNameList();
+
+        private static string[] CreateReservedDeviceNameList()
+        {
+            // CON, PRN, AUX, NUL + COM1-9 + LPT1-9
+            string[] arr = new string[4 + (9 * 2)];
+            int idx = 0;
+
+            arr[idx++] = "CON";
+            arr[idx++] = "PRN";
+            arr[idx++] = "AUX";
+            arr[idx++] = "NUL";
+
+            for (int i = 1; i <= 9; i++)
+            {
+                arr[idx++] = "COM" + i;
+                arr[idx++] = "LPT" + i;
+            }
+
+            return arr;
+        }
+
+        // Checks whether the *name part* is a reserved Windows device filename.
+        // Examples considered reserved: "CON", "CON.txt", "COM1", "LPT9.anything", etc.
+        public static bool IsReservedDeviceName(string nameOrPath)
+        {
+            if (IsNullOrWhiteSpace(nameOrPath))
+                return false;
+
+            string s = nameOrPath.Trim();
+
+            // Keep only the filename portion (strip directories).
+            int lastSlash = Math.Max(s.LastIndexOf('\\'), s.LastIndexOf('/'));
+            if (lastSlash >= 0 && lastSlash + 1 < s.Length)
+                s = s.Substring(lastSlash + 1);
+
+            if (s.Length == 0)
+                return false;
+
+            // NTFS treats trailing spaces and dots as if removed.
+            s = TrimEndSpacesAndDots(s);
+            if (s.Length == 0)
+                return false;
+
+            // Match the part before the first dot.
+            int dotIndex = s.IndexOf('.');
+            string devicePart = (dotIndex >= 0) ? s.Substring(0, dotIndex) : s;
+
+            // Compare case-insensitively to reserved device names.
+            for (int i = 0; i < ReservedDeviceNames.Length; ++i)
+            {
+                if (string.Equals(devicePart, ReservedDeviceNames[i], StringComparison.OrdinalIgnoreCase))
+                    return true;
+            }
+
+            return false;
+        }
+
+        private static string TrimEndSpacesAndDots(string s)
+        {
+            int end = s.Length;
+
+            while (end > 0)
+            {
+                char c = s[end - 1];
+                if (c == ' ' || c == '.')
+                    end--;
+                else
+                    break;
+            }
+
+            return s.Substring(0, end);
         }
 
         /// <summary>
