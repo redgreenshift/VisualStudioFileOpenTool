@@ -9,6 +9,8 @@ A tool to open a specified file at a specific line in the active Visual Studio i
 [![.NET Framework 3.5](https://img.shields.io/badge/3.5-512BD4.svg?logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/platform/support/policy/dotnet-framework)
 [![License: Unlicense](https://img.shields.io/badge/License-Unlicense-808080.svg?logo=unlicense&logoColor=white)](https://unlicense.org/)
 
+[Download binary](https://github.com/redgreenshift/VisualStudioFileOpenTool/blob/master/VisualStudioFileOpenTool/bin/Release/VisualStudioFileOpenTool.exe)
+
 **Usage:** `VisualStudioFileOpenTool.exe <version> <file_path> <line_number>`
 
 | Visual Studio version | Arg 1: `<version>` |
@@ -37,7 +39,24 @@ A tool to open a specified file at a specific line in the active Visual Studio i
 
 	VisualStudioFileOpenTool.exe 26 %f %l
 
-*Inspired by this StackOverflow question: ["Open a file in Visual Studio at a specific line number"](http://stackoverflow.com/questions/350323/open-a-file-in-visual-studio-at-a-specific-line-number).*
+## License
+
+This project is released under [The Unlicense](LICENSE), a public-domain
+dedication with a fallback license for jurisdictions where a public-domain
+dedication is not legally effective.
+
+You may use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the software without restriction, subject to the terms of The
+Unlicense.
+
+Some portions of this project are based on or inspired by the following works:
+
+- [Stack Overflow question 350323: "Open a file in Visual Studio at a specific line number"](https://stackoverflow.com/questions/350323/open-a-file-in-visual-studio-at-a-specific-line-number)
+- [VisualStudioFileOpenTool by diimdeep](https://github.com/diimdeep/VisualStudioFileOpenTool)
+- [VisualStudioFileOpenTool by akof1314](https://github.com/akof1314/VisualStudioFileOpenTool)
+
+Please see the source-file comments and the `LICENSE` file for additional
+attribution and licensing information.
 
 ## AI Policy
 

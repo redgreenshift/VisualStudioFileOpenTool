@@ -1,4 +1,15 @@
-﻿//Inspired by http://stackoverflow.com/questions/350323/open-a-file-in-visual-studio-at-a-specific-line-number
+﻿// Credits:
+//
+// - Inspired by: http://stackoverflow.com/questions/350323/open-a-file-in-visual-studio-at-a-specific-line-number
+//
+// Implementation based on:
+//   - https://github.com/diimdeep/VisualStudioFileOpenTool
+//   - https://github.com/akof1314/VisualStudioFileOpenTool
+//
+// SPDX-License-Identifier: Unlicense
+//
+// This software is released under The Unlicense. See the LICENSE file
+// for the complete license text.
 
 using System;
 using System.Collections.Generic;
