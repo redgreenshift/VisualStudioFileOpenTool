@@ -142,6 +142,14 @@ namespace VisualStudioFileOpenTool
         // Windows reserved device names: CON, PRN, AUX, NUL, COM1-9, LPT1-9
         private static readonly string[] ReservedDeviceNames = CreateReservedDeviceNameList();
 
+        /// <summary>
+        /// Creates the list of reserved Windows device names.
+        /// </summary>
+        /// <returns>
+        /// An array containing the base device names <c>CON</c>, <c>PRN</c>,
+        /// <c>AUX</c>, and <c>NUL</c>, along with <c>COM1</c> through <c>COM9</c>
+        /// and <c>LPT1</c> through <c>LPT9</c>.
+        /// </returns>
         private static string[] CreateReservedDeviceNameList()
         {
             // CON, PRN, AUX, NUL + COM1-9 + LPT1-9
@@ -162,8 +170,25 @@ namespace VisualStudioFileOpenTool
             return arr;
         }
 
-        // Checks whether the *name part* is a reserved Windows device filename.
-        // Examples considered reserved: "CON", "CON.txt", "COM1", "LPT9.anything", etc.
+        /// <summary>
+        /// Determines whether the filename component of the specified filename or
+        /// path matches a reserved Windows device name.
+        /// </summary>
+        /// <remarks>
+        /// The comparison is case-insensitive. Trailing spaces and periods are
+        /// ignored, and any extension is ignored when identifying the device name.
+        /// For example, <c>CON</c>, <c>CON.txt</c>, <c>COM1</c>, and
+        /// <c>LPT9.anything</c> are considered reserved.
+        /// </remarks>
+        /// <param name="nameOrPath">
+        /// A filename or path whose final component should be checked.
+        /// </param>
+        /// <returns>
+        /// <see langword="true"/> if the base name of the final filename component is
+        /// <c>CON</c>, <c>PRN</c>, <c>AUX</c>, <c>NUL</c>, <c>COM1</c> through
+        /// <c>COM9</c>, or <c>LPT1</c> through <c>LPT9</c>, ignoring case and any
+        /// extension; otherwise, <see langword="false"/>.
+        /// </returns>
         public static bool IsReservedDeviceName(string nameOrPath)
         {
             if (IsNullOrWhiteSpace(nameOrPath))
@@ -198,6 +223,15 @@ namespace VisualStudioFileOpenTool
             return false;
         }
 
+        /// <summary>
+        /// Removes trailing spaces and periods from the specified string.
+        /// </summary>
+        /// <param name="s">The string to trim.</param>
+        /// <returns>
+        /// The string without any trailing spaces or periods.
+        /// If <paramref name="s"/> consists entirely of spaces and periods,
+        /// an empty string is returned.
+        /// </returns>
         private static string TrimEndSpacesAndDots(string s)
         {
             int end = s.Length;
@@ -247,8 +281,7 @@ namespace VisualStudioFileOpenTool
             foreach (var info in Versions)
             {
                 int version = info.Key;
-                s += String.Format("{0}{1:D2}", "VisualStudio 20", version);
-                s += String.Format("\t\t{0}\n", version);
+                s += String.Format("{0}{1:D2}\t\t{2}\n", "VisualStudio 20", version, version);
             }
 
             return s;
