@@ -270,6 +270,16 @@ namespace VisualStudioFileOpenTool
                     && (path.StartsWith(@"\\", StringComparison.Ordinal) || path.StartsWith(@"//", StringComparison.Ordinal)));
         }
 
+        /// <summary>
+        /// Returns a help message describing how to invoke the application and
+        /// listing the supported Visual Studio releases.
+        /// </summary>
+        /// <remarks>
+        /// The message documents the expected positional command-line arguments:
+        /// a two-digit suffix of the Visual Studio release year, a file path, and a
+        /// one-based line number. For example, <c>22</c> identifies Visual Studio
+        /// 2022.
+        /// </remarks>
         public static string GetHelpMessage()
         {
             string s = "Trying to open specified file at specified line in active Visual Studio instance\n\n";
