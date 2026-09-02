@@ -1,7 +1,7 @@
 VisualStudioFileOpenTool
 ========================
 
-A command-line tool that opens a specified file in the active Visual Studio instance and attempts to select a specified line, failing gracefully if selection is unsuccessful.
+A command-line tool that opens a specified file in the active Visual Studio instance and navigates to the specified line. By default, the line receives focus; with `--select`, the entire line is selected for replacement. The tool fails gracefully if line navigation or selection is unsuccessful.
 
 [![Visual Studio](https://img.shields.io/badge/Visual%20Studio-5C2D91.svg?logo=data:image/svg%2bxml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48IS0tIFVwbG9hZGVkIHRvOiBTVkcgUmVwbywgd3d3LnN2Z3JlcG8uY29tLCBHZW5lcmF0b3I6IFNWRyBSZXBvIE1peGVyIFRvb2xzOyBoYW5kIG1vZGlmaWVkIHRvIHdoaXRlIG1vbm9jaHJvbWUgLS0+CjxzdmcgZmlsbD0iI0ZGRkZGRiIgd2lkdGg9IjgwMHB4IiBoZWlnaHQ9IjgwMHB4IiB2aWV3Qm94PSItMC41IDAgMjQgMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0ibTE3Ljg1OCAyMy45OTgtOS43NzEtOS40ODQtNS44NjYgNC40NjUtMi4yMjEtMS4xMTV2LTExLjcxOWwyLjIzNC0xLjEyMSA1Ljg3IDQuNDY5IDkuNzQ3LTkuNDkzIDUuNTg3IDIuMjM5djE5LjUzMWwtNS41NzkgMi4yM3ptLS41NjMtMTYuMTg2LTUuNTc3IDQuMTczIDUuNTggNC4yMDJ6bS0xNC41MDcgMS42ODV2NS4wMTZsMi43ODctMi41MjV6Ii8+PC9zdmc+)](https://visualstudio.microsoft.com/)
 [![Windows](https://img.shields.io/badge/Windows-0078D4.svg?logo=data:image/svg%2bxml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48IS0tIE9yaWdpbmFsIGZyb206IFNWRyBSZXBvLCB3d3cuc3ZncmVwby5jb20sIEdlbmVyYXRvcjogU1ZHIFJlcG8gTWl4ZXIgVG9vbHM7IGhhbmQgbW9kaWZpZWQgdG8gd2hpdGUgbW9ub2Nocm9tZSAtLT4KPHN2ZyBmaWxsPSIjRkZGRkZGIiB3aWR0aD0iODAwcHgiIGhlaWdodD0iODAwcHgiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBpZD0iaWNvbnMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTMxLjg3LDMwLjU4SDI0NC43VjI0My4zOUgzMS44N1oiLz48cGF0aCBkPSJNMjY2Ljg5LDMwLjU4SDQ3OS43VjI0My4zOUgyNjYuODlaIi8+PHBhdGggZD0iTTMxLjg3LDI2NS42MUgyNDQuN3YyMTIuOEgzMS44N1oiLz48cGF0aCBkPSJNMjY2Ljg5LDI2NS42MUg0NzkuN3YyMTIuOEgyNjYuODlaIi8+PC9zdmc+)](https://www.microsoft.com/windows)
@@ -11,7 +11,7 @@ A command-line tool that opens a specified file in the active Visual Studio inst
 
 [Download binary](https://github.com/redgreenshift/VisualStudioFileOpenTool/blob/master/VisualStudioFileOpenTool/bin/Release/VisualStudioFileOpenTool.exe)
 
-**Usage:** `VisualStudioFileOpenTool.exe <version> <file_path> <line_number>`
+**Usage:** `VisualStudioFileOpenTool.exe <version> <file_path> <line_number> [-s | --select]`
 
 | Visual Studio version | Arg 1: `<version>` |
 | :--- | :--- |
@@ -37,7 +37,7 @@ A command-line tool that opens a specified file in the active Visual Studio inst
 
 **Beyond Compare settings (Options - Open With - Command line):**
 
-	VisualStudioFileOpenTool.exe 26 %f %l
+	VisualStudioFileOpenTool.exe 26 %f %l --select
 
 ## License
 

@@ -68,6 +68,13 @@ namespace VisualStudioFileOpenTool
                 if (!int.TryParse(args[2], out int fileLine) || fileLine < 1)
                     throw new ArgumentException("Invalid line number: " + args[2]);
 
+                bool select = false;
+                if (args.Length >= 4)
+                {
+                    select = (string.Equals("-s", args[3], StringComparison.OrdinalIgnoreCase))
+                        || (string.Equals("--select", args[3], StringComparison.OrdinalIgnoreCase));
+                }
+
                 visualStudio = (EnvDTE80.DTE2)System.Runtime.InteropServices.Marshal.GetActiveObject(visualStudioProgId);
                 visualStudio.MainWindow.Activate();
                 SetForegroundWindow(new IntPtr(visualStudio.MainWindow.HWnd));
@@ -75,7 +82,7 @@ namespace VisualStudioFileOpenTool
 
                 try
                 {
-                    ((EnvDTE.TextSelection)visualStudio.ActiveDocument.Selection).GotoLine(fileLine);
+                    ((EnvDTE.TextSelection)visualStudio.ActiveDocument.Selection).GotoLine(fileLine, select);
                 }
                 catch (Exception)
                 {
@@ -295,7 +302,7 @@ namespace VisualStudioFileOpenTool
         {
             string s = "Trying to open specified file at specified line in active Visual Studio instance\n\n";
 
-            s += "Usage: <version> <file_path> <line_number>\n\n";
+            s += "Usage: <version> <file_path> <line_number> [-s | --select]\n\n";
 
             s += String.Format("{0}\t{1}\n", "Visual Studio version", "Arg 1: <version>");
             s += String.Format("---------------------------\t---------------------\n");
