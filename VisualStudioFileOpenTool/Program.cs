@@ -45,9 +45,9 @@ namespace VisualStudioFileOpenTool
                     return;
                 }
 
-                if (!int.TryParse(args[0], out int vsVersion) || vsVersion < 1)
+                if (!int.TryParse(args[0], out int vsYearSuffix) || vsYearSuffix < 1)
                     throw new ArgumentException("Invalid Visual Studio version: " + args[0]);
-                if (!Versions.TryGetValue(vsVersion, out string visualStudioProgId) || IsNullOrWhiteSpace(visualStudioProgId))
+                if (!Versions.TryGetValue(vsYearSuffix, out string visualStudioProgId) || IsNullOrWhiteSpace(visualStudioProgId))
                     throw new ArgumentException("Invalid Visual Studio version: " + args[0]);
 
                 string filename = args[1];
@@ -290,8 +290,8 @@ namespace VisualStudioFileOpenTool
             s += String.Format("---------------------------\t---------------------\n");
             foreach (var info in Versions)
             {
-                int version = info.Key;
-                s += String.Format("{0}{1:D2}\t\t{2}\n", "VisualStudio 20", version, version);
+                int vsYearSuffix = info.Key;
+                s += String.Format("{0}{1:D2}\t\t{2}\n", "VisualStudio 20", vsYearSuffix, vsYearSuffix);
             }
 
             return s;
