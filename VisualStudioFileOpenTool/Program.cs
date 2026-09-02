@@ -12,51 +12,70 @@ namespace VisualStudioFileOpenTool
         [DllImport("user32.dll")]
         private static extern bool SetForegroundWindow(IntPtr hWnd);
 
+        // Sources:
+        // http://www.mztools.com/articles/2011/MZ2011011.aspx
+        // https://infosys.beckhoff.com/english.php?content=../content/1033/tc3_automationinterface/242746251.html&id=
+        // https://reactos.org/wiki/Visual_Studio_Versions
+        // https://en.wikipedia.org/wiki/Visual_Studio
+        static Dictionary<int, string> theVersionInfo = new Dictionary<int, string>()
+        {
+            [2] = "VisualStudio.DTE.7",     // 2002
+            [3] = "VisualStudio.DTE.7.1",   // 2003
+            [5] = "VisualStudio.DTE.8.0",   // 2005
+            [8] = "VisualStudio.DTE.9.0",   // 2008
+            [10] = "VisualStudio.DTE.10.0", // 2010
+            [12] = "VisualStudio.DTE.11.0", // 2012
+            [13] = "VisualStudio.DTE.12.0", // 2013
+            [15] = "VisualStudio.DTE.14.0", // 2015
+            [17] = "VisualStudio.DTE.15.0", // 2017
+            [19] = "VisualStudio.DTE.16.0", // 2019
+            [22] = "VisualStudio.DTE.17.0", // 2022
+            [26] = "VisualStudio.DTE.18.0", // 2026
+        };
+
         [STAThread]
         static void Main(string[] args)
         {
-            EnvDTE80.DTE2 dte2 = null;
+            EnvDTE80.DTE2 visualStudio = null;
             try
             {
-                if (args != null && args.Length >= 3)
-                {
-                    if (!int.TryParse(args[0], out int vsVersion) || vsVersion < 1)
-                        throw new ArgumentException("Invalid Visual Studio version: " + args[0]);
-                    string vsString = GetVersionString(vsVersion);
-                    if (IsNullOrWhiteSpace(vsString))
-                        throw new ArgumentException("Invalid Visual Studio version: " + args[0]);
-
-                    string filename = args[1];
-                    if (!ValidAndSafeFilename(filename))
-                        throw new ArgumentException("Invalid file name: " + args[1]);
-
-                    if (!int.TryParse(args[2], out int fileline) || fileline < 1)
-                        throw new ArgumentException("Invalid line number: " + args[2]);
-
-                    dte2 = (EnvDTE80.DTE2)System.Runtime.InteropServices.Marshal.GetActiveObject(vsString);
-                    dte2.MainWindow.Activate();
-                    SetForegroundWindow(new IntPtr(dte2.MainWindow.HWnd));
-                    EnvDTE.Window w = dte2.ItemOperations.OpenFile(filename, EnvDTE.Constants.vsViewKindTextView);
-
-                    try
-                    {
-                        ((EnvDTE.TextSelection)dte2.ActiveDocument.Selection).GotoLine(fileline);
-                    }
-                    catch (Exception)
-                    {
-                        // Occasionally, I get a weird error about a failed RPC call,
-                        // but everything is working except for the selected line.
-                        // I often don't notice until I see many dialog boxes. It's
-                        // such a PAIN to close all the dialog boxes. Let's streamline
-                        // the experience by silently failing to select the line.
-                        //
-                        // Easier for user to retrigger an edit command from a diff tool
-                        // than close all the dialogs that appear behind Visual Studio.
-                    }
-                }
-                else
+                if (args == null || args.Length < 3)
                 {
                     MessageBox.Show(GetHelpMessage());
+                    return;
+                }
+
+                if (!int.TryParse(args[0], out int vsVersion) || vsVersion < 1)
+                    throw new ArgumentException("Invalid Visual Studio version: " + args[0]);
+                if (!theVersionInfo.TryGetValue(vsVersion, out string visualStudioProgId) || IsNullOrWhiteSpace(visualStudioProgId))
+                    throw new ArgumentException("Invalid Visual Studio version: " + args[0]);
+
+                string filename = args[1];
+                if (!ValidAndSafeFilename(filename))
+                    throw new ArgumentException("Invalid file name: " + args[1]);
+
+                if (!int.TryParse(args[2], out int fileLine) || fileLine < 1)
+                    throw new ArgumentException("Invalid line number: " + args[2]);
+
+                visualStudio = (EnvDTE80.DTE2)System.Runtime.InteropServices.Marshal.GetActiveObject(visualStudioProgId);
+                visualStudio.MainWindow.Activate();
+                SetForegroundWindow(new IntPtr(visualStudio.MainWindow.HWnd));
+                EnvDTE.Window window = visualStudio.ItemOperations.OpenFile(filename, EnvDTE.Constants.vsViewKindTextView);
+
+                try
+                {
+                    ((EnvDTE.TextSelection)visualStudio.ActiveDocument.Selection).GotoLine(fileLine);
+                }
+                catch (Exception)
+                {
+                    // Occasionally, I get a weird error about a failed RPC call,
+                    // but everything is working except for the selected line.
+                    // I often don't notice until I see many dialog boxes. It's
+                    // such a PAIN to close all the dialog boxes. Let's streamline
+                    // the experience by silently failing to select the line.
+                    //
+                    // Easier for user to retrigger an edit command from a diff tool
+                    // than close all the dialogs that appear behind Visual Studio.
                 }
             }
             catch (Exception e)
@@ -66,8 +85,8 @@ namespace VisualStudioFileOpenTool
             finally
             {
                 // Clean up COM objects if necessary
-                if (dte2 != null)
-                    Marshal.ReleaseComObject(dte2);
+                if (visualStudio != null)
+                    Marshal.ReleaseComObject(visualStudio);
             }
         }
 
@@ -138,48 +157,20 @@ namespace VisualStudioFileOpenTool
 
         public static string GetHelpMessage()
         {
-            var versions = new List<int>() { 2, 3, 5, 8, 10, 12, 13, 15, 17, 19, 22, 26 };
             string s = "Trying to open specified file at specified line in active Visual Studio instance\n\n";
 
             s += "Usage: <version> <file_path> <line_number>\n\n";
 
             s += String.Format("{0}\t{1}\n", "Visual Studio version", "Arg 1: <version>");
             s += String.Format("---------------------------\t---------------------\n");
-            foreach (int version in versions)
+            foreach (var info in theVersionInfo)
             {
+                int version = info.Key;
                 s += String.Format("{0}{1:D2}", "VisualStudio 20", version);
                 s += String.Format("\t\t{0}\n", version);
             }
 
-            s += "";
-
             return s;
-        }
-
-        public static string GetVersionString(int visualStudioVersionNumber)
-        {
-            // Sources:
-            // http://www.mztools.com/articles/2011/MZ2011011.aspx
-            // https://infosys.beckhoff.com/english.php?content=../content/1033/tc3_automationinterface/242746251.html&id=
-            // https://reactos.org/wiki/Visual_Studio_Versions
-            // https://en.wikipedia.org/wiki/Visual_Studio
-            switch (visualStudioVersionNumber)
-            {
-                case 26: return "VisualStudio.DTE.18.0"; // 2026
-                case 22: return "VisualStudio.DTE.17.0"; // 2022
-                case 19: return "VisualStudio.DTE.16.0"; // 2019
-                case 17: return "VisualStudio.DTE.15.0"; // 2017
-                case 15: return "VisualStudio.DTE.14.0"; // 2015
-                case 13: return "VisualStudio.DTE.12.0"; // 2013
-                case 12: return "VisualStudio.DTE.11.0"; // 2012
-                case 10: return "VisualStudio.DTE.10.0"; // 2010
-                case 8: return  "VisualStudio.DTE.9.0";  // 2008
-                case 5: return  "VisualStudio.DTE.8.0";  // 2005
-                case 3: return  "VisualStudio.DTE.7.1";  // 2003
-                case 2: return  "VisualStudio.DTE.7";    // 2002
-            }
-
-            return "";
         }
     }
 }
