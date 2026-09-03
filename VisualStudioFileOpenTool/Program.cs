@@ -78,22 +78,53 @@ namespace VisualStudioFileOpenTool
                 visualStudio = (EnvDTE80.DTE2)System.Runtime.InteropServices.Marshal.GetActiveObject(visualStudioProgId);
                 visualStudio.MainWindow.Activate();
                 SetForegroundWindow(new IntPtr(visualStudio.MainWindow.HWnd));
-                EnvDTE.Window window = visualStudio.ItemOperations.OpenFile(filename, EnvDTE.Constants.vsViewKindTextView);
+
+                EnvDTE.Window window = null;
 
                 try
                 {
-                    ((EnvDTE.TextSelection)visualStudio.ActiveDocument.Selection).GotoLine(fileLine, select);
+                    window = visualStudio.ItemOperations.OpenFile(filename, EnvDTE.Constants.vsViewKindTextView);
+
+                    EnvDTE.TextSelection sel = null;
+
+                    // Prefer the Window.Selection returned by OpenFile (more reliable than casting ActiveDocument)
+                    try
+                    {
+                        sel = (EnvDTE.TextSelection)window.Selection;
+                    }
+                    catch (COMException)
+                    {
+                        // fallback to the active window selection if window.Selection isn't a TextSelection
+                        try { sel = (EnvDTE.TextSelection)visualStudio.ActiveWindow.Selection; }
+                        catch
+                        {
+                            // If all else fails, fallback to the original flaky version that usually works.
+                            try { sel = ((EnvDTE.TextSelection)visualStudio.ActiveDocument.Selection); }
+                            catch { sel = null; }
+                        }
+                    }
+
+                    if (sel != null)
+                    {
+                        try
+                        {
+                            sel.GotoLine(fileLine, select);
+                        }
+                        catch (COMException)
+                        {
+                            // transient RPC can happen — small delay then one retry often helps
+                            System.Threading.Thread.Sleep(50);
+                            try { sel.GotoLine(fileLine, select); } catch { /* intentionally ignore transient failure */ }
+                        }
+                    }
                 }
-                catch (Exception)
+                finally
                 {
-                    // Occasionally, I get a weird error about a failed RPC call,
-                    // but everything is working except for the selected line.
-                    // I often don't notice until I see many dialog boxes. It's
-                    // such a PAIN to close all the dialog boxes. Let's streamline
-                    // the experience by silently failing to select the line.
-                    //
-                    // Easier for user to retrigger an edit command from a diff tool
-                    // than close all the dialogs that appear behind Visual Studio.
+                    if (window != null)
+                    {
+                        Marshal.ReleaseComObject(window);
+                        window = null;
+                    }
                 }
             }
             catch (Exception e)
